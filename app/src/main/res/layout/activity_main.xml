@@ -63,6 +63,25 @@
         app:layout_constraintVertical_bias="0.328"
         app:rippleColor="#FFFFFF" />
 
+    <Button
+        android:id="@+id/buio_btn"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#636363"
+        android:fontFamily="sans-serif"
+        android:lineSpacingExtra="0sp"
+        android:text="buio"
+        android:textAlignment="center"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.328"
+        app:rippleColor="#FFFFFF" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
@@ -89,21 +108,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />
-
-    <TextView
-        android:id="@+id/scuoti_id"
-        android:layout_width="300dp"
-        android:layout_height="55dp"
-        android:fontFamily="@font/carter_one"
-        android:text="SCUOTI ORLANDO"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.933" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

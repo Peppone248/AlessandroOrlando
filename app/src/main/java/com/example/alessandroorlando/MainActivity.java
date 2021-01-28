@@ -10,14 +10,16 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
-    private MediaPlayer voi, mettilo, figlio, agitato;
+    private MediaPlayer voi, mettilo, figlio, agitato, buio;
     private Button voi_btn;
     private Button mettilo_btn;
     private Button figlio_btn;
+    private Button buio_btn;
     private boolean isAccelerometerAvailable;
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
@@ -31,10 +33,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mettilo = MediaPlayer.create(this, R.raw.mettilodaparte);
         figlio = MediaPlayer.create(this, R.raw.figlio);
         agitato = MediaPlayer.create(this, R.raw.agitato);
+        buio = MediaPlayer.create(this, R.raw.buio);
 
         voi_btn = (Button) this.findViewById(R.id.voi_btn);
         mettilo_btn = (Button) this.findViewById(R.id.da_parte_btn);
         figlio_btn = (Button) this.findViewById((R.id.figlio_btn));
+        buio_btn = (Button) this.findViewById((R.id.buio_btn));
+
         voi_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +58,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onClick(View v) {
                 figlio.start();
+            }
+        });
+
+        buio_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buio.start();
+                WindowManager.LayoutParams params = getWindow().getAttributes();
+                params.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+                params.screenBrightness=0;
+                getWindow().setAttributes(params);
             }
         });
 
