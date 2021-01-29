@@ -13,6 +13,8 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,13 +24,15 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    private MediaPlayer voi, mettilo, figlio, agitato, buio, dove;
+    private MediaPlayer mp, voi, mettilo, figlio, agitato, buio, dove, energia;
     private Button voi_btn;
     private Button mettilo_btn;
     private Button figlio_btn;
     private Button buio_btn;
     private Button dove_btn;
+    private Button energia_btn;
     private boolean isAccelerometerAvailable;
+    private boolean isAnotherAudioPlaying=false;
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
     private Intent intentGPS;
@@ -38,58 +42,81 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        voi = MediaPlayer.create(this, R.raw.voi);
+      /*  voi = MediaPlayer.create(this, R.raw.voi);
         mettilo = MediaPlayer.create(this, R.raw.mettilodaparte);
         figlio = MediaPlayer.create(this, R.raw.figlio);
         agitato = MediaPlayer.create(this, R.raw.agitato);
         buio = MediaPlayer.create(this, R.raw.buio);
         dove = MediaPlayer.create(this, R.raw.dove);
+        energia = MediaPlayer.create(this, R.raw.energia); */
 
         voi_btn = (Button) this.findViewById(R.id.voi_btn);
         mettilo_btn = (Button) this.findViewById(R.id.da_parte_btn);
         figlio_btn = (Button) this.findViewById((R.id.figlio_btn));
         buio_btn = (Button) this.findViewById((R.id.buio_btn));
         dove_btn = (Button) this.findViewById((R.id.dove_btn));
+        energia_btn = (Button) this.findViewById((R.id.energia_btn));
+
 
         voi_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                voi.start();
+                if (mp!=null && mp.isPlaying()){
+                    mp.stop();
+                } else {
+                    mp=MediaPlayer.create(MainActivity.this, R.raw.voi);
+                    mp.start();
+                }
             }
         });
 
         mettilo_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mettilo.start();
+                if (mp!=null && mp.isPlaying()){
+                    mp.stop();
+                } else {
+                    mp=MediaPlayer.create(MainActivity.this, R.raw.mettilodaparte);
+                    mp.start();
+                }
             }
         });
 
         figlio_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                figlio.start();
+                if (mp!=null && mp.isPlaying()){
+                    mp.stop();
+                } else {
+                    mp=MediaPlayer.create(MainActivity.this, R.raw.figlio);
+                    mp.start();
+                }
             }
         });
 
         buio_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buio.start();
-                WindowManager.LayoutParams params = getWindow().getAttributes();
-                params.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-                params.screenBrightness=0;
-                getWindow().setAttributes(params);
-                buio.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        //buio.stop();
-                        WindowManager.LayoutParams params = getWindow().getAttributes();
-                        params.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
-                        params.screenBrightness=200;
-                        getWindow().setAttributes(params);
-                    }
-                });
+                if (mp!=null && mp.isPlaying()){
+                    mp.stop();
+                } else {
+                    mp=MediaPlayer.create(MainActivity.this, R.raw.buio);
+                    mp.start();
+                    WindowManager.LayoutParams params = getWindow().getAttributes();
+                    params.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+                    params.screenBrightness=0;
+                    getWindow().setAttributes(params);
+                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            //buio.stop();
+                            WindowManager.LayoutParams params = getWindow().getAttributes();
+                            params.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+                            params.screenBrightness=200;
+                            getWindow().setAttributes(params);
+                        }
+                    });
+                }
             }
         });
 
@@ -101,6 +128,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 } else {
                     intentGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(intentGPS);
+                }
+            }
+        });
+
+        energia_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                energia.start();
+                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    vibrator.vibrate(VibrationEffect.createOneShot(3500, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    vibrator.vibrate(3500);
                 }
             }
         });
