@@ -123,11 +123,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         dove_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLocationEnabled(MainActivity.this)){
-                    dove.start();
+                if (mp!=null && mp.isPlaying()){
+                    mp.stop();
                 } else {
-                    intentGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intentGPS);
+                    if (isLocationEnabled(MainActivity.this)){
+                        mp=MediaPlayer.create(MainActivity.this, R.raw.dove);
+                        mp.start();
+                    } else {
+                        intentGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intentGPS);
+                    }
                 }
             }
         });
@@ -135,12 +140,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         energia_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                energia.start();
-                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    vibrator.vibrate(VibrationEffect.createOneShot(3500, VibrationEffect.DEFAULT_AMPLITUDE));
+                if (mp != null && mp.isPlaying()) {
+                    mp.stop();
                 } else {
-                    vibrator.vibrate(3500);
+                    mp = MediaPlayer.create(MainActivity.this, R.raw.energia);
+                    mp.start();
+                    Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(3500, VibrationEffect.DEFAULT_AMPLITUDE));
+                    } else {
+                        vibrator.vibrate(3500);
+                    }
                 }
             }
         });
@@ -166,7 +176,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (x>10){
                 Intent intent = new Intent(this, Page1.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                agitato.start();
+                mp = MediaPlayer.create(MainActivity.this, R.raw.agitato);
+                mp.start();
                 startActivity(intent);
             }
         }
@@ -218,6 +229,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onBackPressed() {
         //super.onBackPressed();
         CloseAlert("VUOI DAVVERO ALLONTANARTI DAL MAESTRO?");
+        mp = MediaPlayer.create(MainActivity.this, R.raw.peste);
+        mp.start();
     }
 
     public void CloseAlert(String alertmessage){

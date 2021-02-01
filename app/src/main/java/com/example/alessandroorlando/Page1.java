@@ -7,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 public class Page1 extends AppCompatActivity implements SensorEventListener {
@@ -14,6 +15,7 @@ public class Page1 extends AppCompatActivity implements SensorEventListener {
     private boolean isAccelerometerAvailable;
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
+    private MediaPlayer mp;
 
 
     @Override
@@ -43,6 +45,8 @@ public class Page1 extends AppCompatActivity implements SensorEventListener {
             if (x>10){
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mp = MediaPlayer.create(Page1.this, R.raw.boni);
+                mp.start();
                 startActivity(intent);
             }
         }
